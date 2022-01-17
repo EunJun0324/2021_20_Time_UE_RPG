@@ -23,6 +23,12 @@ private:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCameraComponent* Camera;
 
+private :
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCStatusComponent* Status;
+
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCStateComponent* State;
 public:
 	ACPlayer();
 

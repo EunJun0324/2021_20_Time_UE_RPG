@@ -7,10 +7,17 @@
 #include "Camera/CameraComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
 
+#include "Component/CStatusComponent.h"
+#include "Component/CStateComponent.h"
+
+
 ACPlayer::ACPlayer()
 {
 	CHelpers::CreateComponent<USpringArmComponent>(this, &SpringArm, "SpringArm", GetMesh());
 	CHelpers::CreateComponent<UCameraComponent>(this, &Camera, "Camera", SpringArm);
+	CHelpers::CreateActorComponent<UCStatusComponent>(this, &Status, "Status");
+	CHelpers::CreateActorComponent<UCStateComponent>(this, &State, "State");
+
 
 	bUseControllerRotationYaw = false;
 
@@ -35,7 +42,7 @@ ACPlayer::ACPlayer()
 
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
 	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->MaxWalkSpeed = 600;
+	GetCharacterMovement()->MaxWalkSpeed = Status->GetSprintSpeed();
 }
 
 void ACPlayer::BeginPlay()
@@ -56,6 +63,8 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ACPlayer::OnMoveForward(float InAxis)
 {
+	CheckFalse(Status->CanMove());
+
 	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
 	FVector direction = FQuat(rotator).GetForwardVector();
 
@@ -64,6 +73,8 @@ void ACPlayer::OnMoveForward(float InAxis)
 
 void ACPlayer::OnMoveRight(float InAxis)
 {
+	CheckFalse(Status->CanMove());
+
 	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
 	FVector direction = FQuat(rotator).GetRightVector();
 
