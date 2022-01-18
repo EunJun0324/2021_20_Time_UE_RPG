@@ -3,6 +3,9 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
+#include "Characters/CPlayer.h"
+#include "CSword.h"
+
 void UCAnimInstance::NativeBeginPlay()
 {
 	Super::NativeBeginPlay();
@@ -20,4 +23,6 @@ void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	Direction = CalculateDirection(OwnerCharacter->GetVelocity(), OwnerCharacter->GetControlRotation());
 	Pitch = OwnerCharacter->GetBaseAimRotation().Pitch;
 
+	ACPlayer* player = Cast<ACPlayer>(OwnerCharacter);
+	if (player) bEquipped = player->GetSword()->GetEquipped();
 }

@@ -10,6 +10,7 @@
 #include "Component/CStatusComponent.h"
 #include "Component/CStateComponent.h"
 
+#include "CSword.h"
 
 ACPlayer::ACPlayer()
 {
@@ -43,12 +44,19 @@ ACPlayer::ACPlayer()
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->MaxWalkSpeed = Status->GetSprintSpeed();
+
+	CHelpers::GetClass<ACSword>(&SwordClass, "Blueprint'/Game/BP_CSword.BP_CSword_C'");
 }
 
 void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	FActorSpawnParameters params;
+	params.Owner = this;
+
+	Sword = GetWorld()->SpawnActor<ACSword>(SwordClass, params);
+	Sword->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), "Holster_OneHand");
 }
 
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -59,6 +67,8 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis("MoveRight", this, &ACPlayer::OnMoveRight);
 	PlayerInputComponent->BindAxis("HorizontalLook", this, &ACPlayer::OnHorizontalLook);
 	PlayerInputComponent->BindAxis("VerticalLook", this, &ACPlayer::OnVerticalLook);
+
+	PlayerInputComponent->BindAction("OneHand", IE_Pressed, this, &ACPlayer::OnOneHand);
 }
 
 void ACPlayer::OnMoveForward(float InAxis)
@@ -90,3 +100,6 @@ void ACPlayer::OnVerticalLook(float InAxis)
 {
 	AddControllerPitchInput(InAxis * VerticalLook * GetWorld()->GetDeltaSeconds());
 }
+
+void ACPlayer::OnOneHand()
+{ Sword->Equip(); }

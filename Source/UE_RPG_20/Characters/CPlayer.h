@@ -43,4 +43,15 @@ private:
 	void OnMoveRight(float InAxis);
 	void OnHorizontalLook(float InAxis);
 	void OnVerticalLook(float InAxis);
+
+	void OnOneHand();
+
+private :
+	UPROPERTY(EditDefaultsOnly, Category = "Sword")
+		TSubclassOf<class ACSword> SwordClass;
+
+	class ACSword* Sword;
+
+public :
+	FORCEINLINE class ACSword* GetSword() { return Sword; }
 };
