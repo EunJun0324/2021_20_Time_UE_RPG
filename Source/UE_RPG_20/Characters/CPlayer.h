@@ -46,6 +46,9 @@ private:
 
 	void OnOneHand();
 
+	void OnAction();
+
+
 private :
 	UPROPERTY(EditDefaultsOnly, Category = "Sword")
 		TSubclassOf<class ACSword> SwordClass;

@@ -24,6 +24,10 @@ ACSword::ACSword()
 	Capsule->SetCapsuleRadius(11);
 
 	CHelpers::GetAsset<UAnimMontage>(&EquipMontage, "AnimMontage'/Game/Character/Montages/OneHand/Draw_Sword_Montage.Draw_Sword_Montage'");
+
+	CHelpers::GetAsset<UAnimMontage>(&ComboMontage[0], "AnimMontage'/Game/Character/Montages/OneHand/Sword_Attack_1_Montage.Sword_Attack_1_Montage'");
+	CHelpers::GetAsset<UAnimMontage>(&ComboMontage[1], "AnimMontage'/Game/Character/Montages/OneHand/Sword_Attack_2_Montage.Sword_Attack_2_Montage'");
+	CHelpers::GetAsset<UAnimMontage>(&ComboMontage[2], "AnimMontage'/Game/Character/Montages/OneHand/Sword_Attack_3_Montage.Sword_Attack_3_Montage'");
 }
 
 void ACSword::BeginPlay()
@@ -76,6 +80,39 @@ void ACSword::Unequip()
 	OwnerCharacter->GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
+void ACSword::Action()		
+{
+	CheckFalse(bEquipped);
+
+	if (bEnable)
+	{
+		bExist = true;
+		bEnable = false;
+		return;
+	}
+
+	CheckFalse(State->IsIdleMode());
+
+	Status->Stop();
+	State->SetActionMode();
+
+	OwnerCharacter->PlayAnimMontage(ComboMontage[Index], 1.5f);
+}
+void ACSword::Begin_Action()
+{
+	CheckFalse(bExist);
+	bExist = false;
+
+	OwnerCharacter->PlayAnimMontage(ComboMontage[++Index], 1.5f);
+}
+void ACSword::End_Action()
+{
+	Index = 0;
+
+	Status->Move();
+	State->SetIdleMode();
+}
+
 void ACSword::OnCollision()
 { Capsule->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics); }
 
@@ -84,5 +121,8 @@ void ACSword::OffCollision()
 
 void ACSword::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	CheckTrue(OtherActor == OwnerCharacter);
 
+	FDamageEvent DE;
+	OtherActor->TakeDamage(20, DE ,OwnerCharacter->GetController(), this);
 }
