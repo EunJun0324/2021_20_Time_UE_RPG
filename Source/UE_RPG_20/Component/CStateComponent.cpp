@@ -21,4 +21,9 @@ void UCStateComponent::SetActionMode()
 { ChangeType(EStateType::Action); }
 
 void UCStateComponent::ChangeType(EStateType InType)
-{ Type = InType; }
+{ 
+	Type = InType; 
+
+	if (OnStateTypeChanged.IsBound())
+		OnStateTypeChanged.Broadcast(InType);
+}

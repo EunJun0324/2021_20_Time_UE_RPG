@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Component/CStateComponent.h"
 #include "CEnemy.generated.h"
 
 UCLASS()
@@ -14,6 +15,9 @@ private :
 		FLinearColor OriginColor = FLinearColor::Black;
 
 private:
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCMontageComponent* Montage;
+
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCStatusComponent* Status;
 
@@ -30,8 +34,21 @@ protected:
 	virtual void BeginPlay() override;
 
 private :
+	UFUNCTION()
+		void OnStateTypeChanged(EStateType InType);
+
+private :
+	void Hitted();
+	void Dead();
+private :
 	void Change_Character_Color(FLinearColor InColor);
 
 private :
+	struct FDamaged
+	{
+		float DamageAmount;
+		class AController* EventInstigator;
+	}Damaged;
+
 	TArray<class UMaterialInstanceDynamic*> Materials;
 };

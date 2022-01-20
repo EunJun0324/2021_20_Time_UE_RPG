@@ -8,12 +8,14 @@
 #include "Materials/MaterialInstanceDynamic.h"
 
 #include "Component/CStatusComponent.h"
-#include "Component/CStateComponent.h"
+#include "Component/CMontageComponent.h"
 
 ACEnemy::ACEnemy()
 {
 	CHelpers::CreateActorComponent<UCStatusComponent>(this, &Status, "Status");
 	CHelpers::CreateActorComponent<UCStateComponent>(this, &State, "State");
+	CHelpers::CreateActorComponent<UCMontageComponent>(this, &Montage, "Montage");
+
 
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -90));
 	GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
@@ -31,6 +33,8 @@ void ACEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	State->OnStateTypeChanged.AddDynamic(this, &ACEnemy::OnStateTypeChanged);
+
 	int count = 0;
 	TArray<UMaterialInterface*> materials = GetMesh()->GetMaterials();
 	for (UMaterialInterface* material : materials)
@@ -44,11 +48,66 @@ void ACEnemy::BeginPlay()
 	Change_Character_Color(OriginColor);
 }
 
+void ACEnemy::OnStateTypeChanged(EStateType InType)
+{
+	switch (InType)
+	{
+	case EStateType::Hitted: Hitted(); break;
+	case EStateType::Dead:  Dead();    break;
+	}
+}
+
 float ACEnemy::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
 {
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
+	Damaged.DamageAmount = DamageAmount;
+	Damaged.EventInstigator = EventInstigator;
+
+	State->SetHittedMode();
+
 	return DamageAmount;
+}
+
+void ACEnemy::Hitted()
+{
+	Montage->PlayHittedMode();
+
+	Change_Character_Color(FLinearColor::Red);
+
+	FTimerHandle timerHandle;
+	FTimerDelegate timerDelegate = FTimerDelegate::CreateLambda([=]()
+		{
+			Change_Character_Color(OriginColor);
+		});
+
+	GetWorld()->GetTimerManager().SetTimer(timerHandle, timerDelegate, 0.2f, false);
+
+	Status->SubHealth(Damaged.DamageAmount);
+	Damaged.DamageAmount = 0.0f;
+
+	if (Status->GetHp() <= 0.0f)
+	{
+		State->SetDeadMode();
+		return;
+	}
+
+	FVector start = GetActorLocation();
+	FVector target = Damaged.EventInstigator->GetPawn()->GetActorLocation();
+
+	FVector direction = target - start;
+	direction.Normalize();
+
+	LaunchCharacter(-direction * 300 , true, false);
+
+	SetActorRotation(UKismetMathLibrary::FindLookAtRotation(start , target));
+	Damaged.EventInstigator = NULL;
+}
+
+void ACEnemy::Dead()
+{
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Montage->PlayDeadMode();
 }
 
 void ACEnemy::Change_Character_Color(FLinearColor InColor)

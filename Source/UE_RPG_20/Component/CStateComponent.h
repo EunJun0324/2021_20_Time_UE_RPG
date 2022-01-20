@@ -10,6 +10,8 @@ enum class EStateType : uint8
 	Idle, Equip, Hitted, Dead, Action, Max
 };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStateTypeChanged, EStateType, InNewType);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class UE_RPG_20_API UCStateComponent : public UActorComponent
 {
@@ -40,6 +42,9 @@ protected:
 
 private :
 	void ChangeType(EStateType InType);
+
+public :
+	FStateTypeChanged OnStateTypeChanged;
 
 private :
 	EStateType Type;

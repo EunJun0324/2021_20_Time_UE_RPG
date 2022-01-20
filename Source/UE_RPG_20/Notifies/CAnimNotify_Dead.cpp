@@ -1,0 +1,22 @@
+#include "Notifies/CAnimNotify_Dead.h"
+#include "Global.h"
+#include "GameFramework/Character.h"
+
+FString UCAnimNotify_Dead::GetNotifyName_Implementation() const
+{
+	return "Dead";
+}
+
+void UCAnimNotify_Dead::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
+{
+	Super::Notify(MeshComp, Animation);
+
+	CheckNull(MeshComp);
+	CheckNull(MeshComp->GetOwner());
+
+	ACharacter* character = Cast<ACharacter>(MeshComp->GetOwner());
+	CheckNull(character);
+	
+	character->Destroy();
+
+}
