@@ -37,7 +37,7 @@ public :
 
 };
 
-USTRUCT(BluerprintType)
+USTRUCT(BlueprintType)
 struct FHitData
 {
 	GENERATED_BODY()
@@ -72,12 +72,21 @@ public :
 
 public:
 	void PlayMontage(class ACharacter* InOwner);
-	void PlayEffect(class UWorld* InWorld, class ACharacter* InOwner);
+	void PlayEffect(class UWorld* InWorld, const FTransform& InTransform);
 	void PlayEffect(class USkeletalMeshComponent* InMesh, FName InSockectName = NAME_None);
 	void PlaySoundCue(class UWorld* InWorld, const FVector& InLocation);
 	void PlayHitStop(class UWorld* InWorld);
 	void SendDamage(class ACharacter* InAttacker, class AActor* InAttackCursor, class ACharacter* InOtherCharacter);
 
+};
+
+USTRUCT(BlueprintType)
+struct FActionDamageEvent : public FDamageEvent
+{
+	GENERATED_BODY()
+
+public :
+	FHitData* HitData;
 };
 
 UCLASS()
@@ -88,4 +97,9 @@ class UE_RPG_20_API UCWeaponStructures : public UObject
 
 public:
 	UCWeaponStructures();
+
+	FORCEINLINE static class UAnimMontage* GetDefaultHitMontage() { return DefaultHitMontage; }
+
+private :
+	static class UAnimMontage* DefaultHitMontage;
 };
