@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "CWeaponStructures.h"
+#include "CEquippment.h"
 #include "CWeaponAsset.generated.h"
 
 UCLASS()
@@ -12,11 +13,41 @@ class UE_RPG_20_API UCWeaponAsset : public UDataAsset
 	
 public :
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-		TSubclassOf<class UCEquipment> EquipmentClass;
+		TSubclassOf<class ACAttachment> AttachmentClass;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		TSubclassOf<class UCEquippment> EquipmentClass;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		FEquipmentData EquipmentData;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		TSubclassOf<class UCDoAction> DoActionClass;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		TArray<FDoActionData> DoActionDatas;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		TArray<FHitData> HitDatas;
+
+public :
+	UCWeaponAsset();
+
+	void BeginPlay(class ACharacter* InOwner);
+	void EndPlay();
+
+
+	FORCEINLINE class ACAttachment* GetAttachment() { return Attachment; }
+	FORCEINLINE class UCEquippment* GetEquippment() { return Equippment; }
+	FORCEINLINE class UCDoAction* GetDoAction() { return DoAction; }
+
+private :
+	UPROPERTY()
+		class ACAttachment* Attachment;
+
+	UPROPERTY()
+		class UCEquippment* Equippment;
+	
+	UPROPERTY()
+		class UCDoAction* DoAction;
 };

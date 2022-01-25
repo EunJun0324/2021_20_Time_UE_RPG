@@ -13,7 +13,7 @@ UAnimMontage* UCWeaponStructures::DefaultHitMontage = nullptr;
 
 UCWeaponStructures::UCWeaponStructures()
 {
-	CHelpers::GetAsset<UAnimMontage>(&DefaultHitMontage, "");
+	CHelpers::GetAsset<UAnimMontage>(&DefaultHitMontage, "AnimMontage'/Game/Character/Montages/Common/HitReaction_Montage.HitReaction_Montage'");
 }
 
 void FDoActionData::PlayMontage(ACharacter* InOwner)

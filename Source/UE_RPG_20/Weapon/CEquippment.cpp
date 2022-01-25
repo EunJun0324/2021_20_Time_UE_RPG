@@ -5,9 +5,6 @@
 #include "Component/CStateComponent.h"
 #include "Component/CStatusComponent.h"
 
-
-
-
 UCEquippment::UCEquippment() {}
 
 void UCEquippment::BeginPlay(class ACharacter* InOwner, const FEquipmentData& InData)
