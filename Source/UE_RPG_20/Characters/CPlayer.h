@@ -29,6 +29,9 @@ private :
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCStateComponent* State;
+
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCWeaponComponent* Weapon;
 public:
 	ACPlayer();
 

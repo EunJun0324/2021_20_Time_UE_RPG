@@ -9,7 +9,8 @@
 
 #include "Component/CStatusComponent.h"
 #include "Component/CStateComponent.h"
-
+#include "Component/CWeaponComponent.h"
+	
 #include "CSword.h"
 
 ACPlayer::ACPlayer()
@@ -18,6 +19,7 @@ ACPlayer::ACPlayer()
 	CHelpers::CreateComponent<UCameraComponent>(this, &Camera, "Camera", SpringArm);
 	CHelpers::CreateActorComponent<UCStatusComponent>(this, &Status, "Status");
 	CHelpers::CreateActorComponent<UCStateComponent>(this, &State, "State");
+	CHelpers::CreateActorComponent<UCWeaponComponent>(this, &Weapon, "Weapon");
 
 
 	bUseControllerRotationYaw = false;
