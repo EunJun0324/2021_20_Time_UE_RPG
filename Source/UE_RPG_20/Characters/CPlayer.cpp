@@ -11,7 +11,7 @@
 #include "Component/CStateComponent.h"
 #include "Component/CWeaponComponent.h"
 	
-#include "CSword.h"
+// #include "CSword.h"
 
 ACPlayer::ACPlayer()
 {
@@ -47,18 +47,18 @@ ACPlayer::ACPlayer()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->MaxWalkSpeed = Status->GetSprintSpeed();
 
-	CHelpers::GetClass<ACSword>(&SwordClass, "Blueprint'/Game/BP_CSword.BP_CSword_C'");
+	// CHelpers::GetClass<ACSword>(&SwordClass, "Blueprint'/Game/BP_CSword.BP_CSword_C'");
 }
 
 void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	FActorSpawnParameters params;
-	params.Owner = this;
+	// FActorSpawnParameters params;
+	// params.Owner = this;
 
-	Sword = GetWorld()->SpawnActor<ACSword>(SwordClass, params);
-	Sword->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), "Holster_OneHand");
+	//Sword = GetWorld()->SpawnActor<ACSword>(SwordClass, params);
+	//Sword->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), "Holster_OneHand");
 }
 
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -106,7 +106,15 @@ void ACPlayer::OnVerticalLook(float InAxis)
 }
 
 void ACPlayer::OnOneHand()
-{ Sword->Equip(); }
+{
+	// Sword->Equip(); 
+	CheckFalse(State->IsIdleMode());
+
+	Weapon->SetOneHandMode();
+}
 
 void ACPlayer::OnAction()
-{ Sword->Action(); }
+{ 
+	//Sword->Action(); 
+	Weapon->DoAction();
+}

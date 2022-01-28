@@ -31,6 +31,9 @@ class UE_RPG_20_API UCEquippment : public UObject
 	GENERATED_BODY()
 	
 public :
+	FORCEINLINE const bool* IsEquipping() { return &bEquipping; }
+
+public :
 	UCEquippment();
 
 	void BeginPlay(class ACharacter* InOwner, const FEquipmentData& InData);

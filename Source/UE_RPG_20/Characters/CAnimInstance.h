@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "Component/CWeaponComponent.h"
 #include "CAnimInstance.generated.h"
 
 UCLASS()
@@ -19,13 +20,20 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "CharacterMovement")
 		float Pitch;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Weapon")
-		bool bEquipped;
+	// UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Weapon")
+	// 	bool bEquipped;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "WeaponType")
+		EWeaponType WeaponType = EWeaponType::Max;
 public:
 	virtual void NativeBeginPlay() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
+private :
+	UFUNCTION()
+		void OnWeaponTypeChanged(EWeaponType InNewType);
+
 private:
 	class ACharacter* OwnerCharacter;
+	class UCWeaponComponent* Weapon;
 };
