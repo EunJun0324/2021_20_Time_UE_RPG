@@ -58,7 +58,7 @@ public :
 	class UCEquippment* GetEquipment();
 	class UCDoAction*   GetDoAction();
 
-public :
+private :
 	void SetMode(EWeaponType InType);
 	void ChangeType(EWeaponType InType);
 

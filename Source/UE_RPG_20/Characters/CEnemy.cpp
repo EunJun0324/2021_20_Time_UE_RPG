@@ -10,6 +10,8 @@
 #include "Component/CStatusComponent.h"
 #include "Component/CMontageComponent.h"
 
+#include "Weapon/CWeaponStructures.h"
+
 ACEnemy::ACEnemy()
 {
 	CHelpers::CreateActorComponent<UCStatusComponent>(this, &Status, "Status");
@@ -61,8 +63,11 @@ float ACEnemy::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageE
 {
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
+	CLog::Print(this);
+
 	Damaged.DamageAmount = DamageAmount;
 	Damaged.EventInstigator = EventInstigator;
+	Damaged.DamageEvent = (FActionDamageEvent*)&DamageEvent;
 
 	State->SetHittedMode();
 
@@ -71,7 +76,7 @@ float ACEnemy::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageE
 
 void ACEnemy::Hitted()
 {
-	Montage->PlayHittedMode();
+	// Montage->PlayHittedMode();
 
 	Change_Character_Color(FLinearColor::Red);
 
@@ -95,10 +100,25 @@ void ACEnemy::Hitted()
 	FVector start = GetActorLocation();
 	FVector target = Damaged.EventInstigator->GetPawn()->GetActorLocation();
 
-	FVector direction = target - start;
-	direction.Normalize();
 
-	LaunchCharacter(-direction * 300 , true, false);
+	if (Damaged.DamageEvent && Damaged.DamageEvent->HitData)
+	{
+		FHitData* data = Damaged.DamageEvent->HitData;
+		data->PlayMontage(this);
+
+		FTransform transform;
+		transform.SetLocation(GetActorLocation());
+		
+		data->PlayEffect(GetWorld(), transform);
+		data->PlayHitStop(GetWorld());
+		data->PlaySoundCue(GetWorld(), GetActorLocation());
+
+		FVector direction = target - start;
+		direction.Normalize();
+
+		LaunchCharacter(-direction * 300, true, false);
+	}
+	Damaged.DamageEvent = NULL;
 
 	SetActorRotation(UKismetMathLibrary::FindLookAtRotation(start , target));
 	Damaged.EventInstigator = NULL;

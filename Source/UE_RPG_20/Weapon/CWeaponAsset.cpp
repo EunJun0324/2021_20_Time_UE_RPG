@@ -24,6 +24,7 @@ void UCWeaponAsset::BeginPlay(class ACharacter* InOwner)
 	if (EquipmentClass)
 	{
 		Equippment = NewObject<UCEquippment>(this, EquipmentClass);
+		Equippment->BeginPlay(InOwner, EquipmentData);
 
 		if (Attachment)
 		{
@@ -46,6 +47,9 @@ void UCWeaponAsset::BeginPlay(class ACharacter* InOwner)
 		{
 			Attachment->OnAttachmentBeginOverlap.AddDynamic(DoAction, &UCDoAction::OnAttachmentBeginOverlap);
 			Attachment->OnAttachmentEndOverlap.AddDynamic(DoAction, &UCDoAction::OnAttachmentEndOverlap);
+
+			Attachment->OnAttachmentCollision.AddDynamic(DoAction, &UCDoAction::OnAttachmentCollision);
+			Attachment->OffAttachmentCollision.AddDynamic(DoAction, &UCDoAction::OffAttachmentCollision);
 		}
 	}
 }

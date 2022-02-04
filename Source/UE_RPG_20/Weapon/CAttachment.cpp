@@ -28,11 +28,17 @@ void ACAttachment::OnCollision()
 {
 	for (UShapeComponent* collision : Collisions)
 		collision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
+	if (OnAttachmentCollision.IsBound())
+		OnAttachmentCollision.Broadcast();
 }
 void ACAttachment::OffCollision()
 {
 	for (UShapeComponent* collision : Collisions)
 		collision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	if (OffAttachmentCollision.IsBound())
+		OffAttachmentCollision.Broadcast();
 }
 
 void ACAttachment::AttachTo(FName InSocketName)

@@ -31,6 +31,7 @@ void UCWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 			GetDoAction()->Tick(DeltaTime);
 	}
 
+	CLog::Print(CHelpers::GetStringFromEnum(FString("EWeaponType"), (int32)Type));
 }
 
 
@@ -88,6 +89,7 @@ void UCWeaponComponent::SetMode(EWeaponType InType)
 	}
 	else if (IsUnarmedMode() == false)
 	{ GetEquipment()->Unequip(); }
+	
 	if (DataAssets[(int32)InType])
 	{
 		DataAssets[(int32)InType]->GetEquippment()->Equip();
@@ -99,6 +101,8 @@ void UCWeaponComponent::SetMode(EWeaponType InType)
 void UCWeaponComponent::ChangeType(EWeaponType InType)
 {
 	Type = InType;
+
+	CLog::Print(CHelpers::GetStringFromEnum(FString("EWeaponType"), (int32)InType));
 
 	if (OnWeaponTypeChanged.IsBound())
 		OnWeaponTypeChanged.Broadcast(InType);

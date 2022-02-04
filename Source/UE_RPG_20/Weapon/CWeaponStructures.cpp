@@ -117,7 +117,7 @@ void FHitData::PlayHitStop(UWorld* InWorld)
 		});
 
 	FTimerHandle timerHandle;
-	InWorld->GetTimerManager().SetTimer(timerHandle, timerDelegate, StopTime, false);
+	InWorld->GetTimerManager().SetTimer(timerHandle, timerDelegate, StopTime * 0.001 , false);
 
 }
 
