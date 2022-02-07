@@ -31,14 +31,13 @@ void UCWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 			GetDoAction()->Tick(DeltaTime);
 	}
 
-	CLog::Print(CHelpers::GetStringFromEnum(FString("EWeaponType"), (int32)Type));
 }
 
 
 void UCWeaponComponent::SetUnarmedMode()
 {
 	GetEquipment()->Unequip();
-	SetMode(EWeaponType::Max);
+	ChangeType(EWeaponType::Max);
 }
 
 void UCWeaponComponent::SetFistMode()
@@ -101,8 +100,6 @@ void UCWeaponComponent::SetMode(EWeaponType InType)
 void UCWeaponComponent::ChangeType(EWeaponType InType)
 {
 	Type = InType;
-
-	CLog::Print(CHelpers::GetStringFromEnum(FString("EWeaponType"), (int32)InType));
 
 	if (OnWeaponTypeChanged.IsBound())
 		OnWeaponTypeChanged.Broadcast(InType);
