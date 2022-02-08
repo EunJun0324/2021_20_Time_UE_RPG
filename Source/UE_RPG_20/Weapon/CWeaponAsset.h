@@ -30,6 +30,9 @@ public :
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		TArray<FHitData> HitDatas;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		TSubclassOf<class UCSubAction> SubActionClass;
+
 public :
 	UCWeaponAsset();
 
@@ -40,6 +43,7 @@ public :
 	FORCEINLINE class ACAttachment* GetAttachment() { return Attachment; }
 	FORCEINLINE class UCEquippment* GetEquippment() { return Equippment; }
 	FORCEINLINE class UCDoAction* GetDoAction() { return DoAction; }
+	FORCEINLINE class UCSubAction* GetSubAction() { return SubAction; }
 
 private :
 	UPROPERTY()
@@ -50,4 +54,7 @@ private :
 	
 	UPROPERTY()
 		class UCDoAction* DoAction;
+
+	UPROPERTY()
+		class UCSubAction* SubAction;
 };

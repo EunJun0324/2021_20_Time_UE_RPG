@@ -21,6 +21,12 @@ void UCStateComponent::SetDeadMode()
 void UCStateComponent::SetActionMode()
 { ChangeType(EStateType::Action); }
 
+void UCStateComponent::OnSubActionMode()
+{ bInSubAction = true; }
+
+void UCStateComponent::OffSubActionMode()
+{ bInSubAction = false; }
+
 void UCStateComponent::ChangeType(EStateType InType)
 { 
 	Type = InType; 

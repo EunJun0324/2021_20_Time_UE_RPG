@@ -51,6 +51,8 @@ private:
 
 	void OnAction();
 
+	void OnSubAction_Pressed();
+	void OnSubAction_Released();
 
 private :
 	UPROPERTY(EditDefaultsOnly, Category = "Sword")

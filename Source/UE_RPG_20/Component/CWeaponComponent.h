@@ -46,6 +46,8 @@ public:
     void SetBowMode();
 
 	void DoAction();
+	void SubAction_Pressed();
+	void SubAction_Released();
 
 protected:
 	virtual void BeginPlay() override;
@@ -57,6 +59,7 @@ public :
 	class ACAttachment* GetAttachment();
 	class UCEquippment* GetEquipment();
 	class UCDoAction*   GetDoAction();
+	class UCSubAction*  GetSubAction();
 
 private :
 	void SetMode(EWeaponType InType);

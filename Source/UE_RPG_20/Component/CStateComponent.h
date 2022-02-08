@@ -28,6 +28,9 @@ public :
 		FORCEINLINE bool IsDeadMode() { return Type == EStateType::Dead; }
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE bool IsActionMode() { return Type == EStateType::Action; }
+	UFUNCTION(BlueprintPure)
+		FORCEINLINE bool IsSubActionMode() { return bInSubAction; }
+
 public:	
 	UCStateComponent();
 
@@ -36,6 +39,9 @@ public:
 	void SetHittedMode();
 	void SetDeadMode();
 	void SetActionMode();
+
+	void OnSubActionMode();
+	void OffSubActionMode();
 
 protected:
 	virtual void BeginPlay() override;
@@ -48,4 +54,5 @@ public :
 
 private :
 	EStateType Type;
+	bool bInSubAction;
 };

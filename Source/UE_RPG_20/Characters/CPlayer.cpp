@@ -73,6 +73,11 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("OneHand", IE_Pressed, this, &ACPlayer::OnOneHand);
 
 	PlayerInputComponent->BindAction("Action", IE_Pressed, this, &ACPlayer::OnAction);
+
+	PlayerInputComponent->BindAction("SubAction", IE_Pressed, this, &ACPlayer::OnSubAction_Pressed);
+	PlayerInputComponent->BindAction("SubAction", IE_Released, this, &ACPlayer::OnSubAction_Released);
+
+
 }
 
 void ACPlayer::OnMoveForward(float InAxis)
@@ -118,3 +123,9 @@ void ACPlayer::OnAction()
 	//Sword->Action(); 
 	Weapon->DoAction();
 }
+
+void ACPlayer::OnSubAction_Pressed()
+{ Weapon->SubAction_Pressed(); }
+
+void ACPlayer::OnSubAction_Released()
+{ Weapon->SubAction_Released(); }
