@@ -46,6 +46,7 @@ void UCSubAction_Launcher::Pressed()
 	State->SetActionMode();
 	State->OnSubActionMode();
 
+	ActionData.SpawnGhostTrail(OwnerCharacter);
 	ActionData.PlayMontage(OwnerCharacter);
 }
 void UCSubAction_Launcher::Begin_SubAction()

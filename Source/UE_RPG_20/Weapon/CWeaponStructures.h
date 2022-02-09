@@ -28,13 +28,19 @@ public :
 	UPROPERTY(EditAnywhere)
 		FTransform EffectTransform;
 
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class ACGhostTrail> GhostTrailClass;
+
 public :
 	void PlayMontage(class ACharacter* InOwner);
 	void PlayEffect(class UWorld* InWorld, class ACharacter* InOwner);
 	void PlayEffect(class USkeletalMeshComponent* InMesh, FName InSockectName = NAME_None);
+	void SpawnGhostTrail(class ACharacter* InOwner);
 	
 	void EndAction(class ACharacter* InOwner);
 
+private :
+	class ACGhostTrail* BackupGhostTrail;
 };
 
 USTRUCT(BlueprintType)

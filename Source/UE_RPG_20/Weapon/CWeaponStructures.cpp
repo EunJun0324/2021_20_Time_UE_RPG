@@ -7,6 +7,7 @@
 #include "Component/CStateComponent.h"
 #include "Animation/AnimMontage.h"
 #include "Sound/SoundCue.h"
+#include "Weapon/CGhostTrail.h"
 
 
 UAnimMontage* UCWeaponStructures::DefaultHitMontage = nullptr;
@@ -54,6 +55,23 @@ void FDoActionData::PlayEffect(USkeletalMeshComponent* InMesh, FName InSockectNa
 	CHelpers::PlayEffect(world, Effect, EffectTransform, InMesh, InSockectName);
 }
 
+void FDoActionData::SpawnGhostTrail(ACharacter* InOwner)
+{
+	CheckNull(GhostTrailClass);
+
+	FActorSpawnParameters params;
+	params.Owner = InOwner;
+	params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	FVector vector = InOwner->GetActorLocation();
+	vector.Z -= InOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+
+	FTransform transform;
+	transform.SetLocation(vector);
+
+	BackupGhostTrail = InOwner->GetWorld()->SpawnActor<ACGhostTrail>(GhostTrailClass, transform, params);
+}
+
 void FDoActionData::EndAction(ACharacter* InOwner)
 {
 	UCStatusComponent* status = CHelpers::GetComponent<UCStatusComponent>(InOwner);
@@ -63,6 +81,9 @@ void FDoActionData::EndAction(ACharacter* InOwner)
 	UCStateComponent* state = CHelpers::GetComponent<UCStateComponent>(InOwner);
 	if (state)
 		state->SetIdleMode();
+	
+	if (BackupGhostTrail)
+		BackupGhostTrail->Destroy();
 }
 
 void FHitData::PlayMontage(ACharacter* InOwner)
