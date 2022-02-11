@@ -19,6 +19,8 @@ void ACSkill_SwordSlash::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Niagara->SetNiagaraVariableObject("Scale_Callback", this);
+
 	Niagara->OnSystemFinished.AddDynamic(this, &ACSkill_SwordSlash::OnSystemFinished);
 
 	Box->OnComponentBeginOverlap.AddDynamic(this, &ACSkill_SwordSlash::OnComponentBeginOverlap);
@@ -31,6 +33,15 @@ void ACSkill_SwordSlash::OnSystemFinished(class UNiagaraComponent* pSystem)
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 
 	Destroy();
+}
+
+void ACSkill_SwordSlash::ReceiveParticleData_Implementation(const TArray<FBasicParticleData>& Data, UNiagaraSystem* NiagaraSystem)
+{
+	Box->SetRelativeScale3D(Data[0].Position);
+	FVector location = Box->GetScaledBoxExtent();
+
+	location.Y = 0;
+	Box->SetRelativeLocation(location);
 }
 
 void ACSkill_SwordSlash::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

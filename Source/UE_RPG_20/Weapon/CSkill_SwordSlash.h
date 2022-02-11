@@ -2,10 +2,12 @@
 
 #include "CoreMinimal.h"
 #include "Weapon/CSkill.h"
+#include "NiagaraDataInterfaceExport.h"
 #include "CSkill_SwordSlash.generated.h"
 
 UCLASS()
-class UE_RPG_20_API ACSkill_SwordSlash : public ACSkill
+class UE_RPG_20_API ACSkill_SwordSlash : public ACSkill,
+	public INiagaraParticleCallbackHandler
 {
 	GENERATED_BODY()
 	
@@ -26,6 +28,8 @@ protected :
 
 public :
 	ACSkill_SwordSlash();
+
+	void ReceiveParticleData_Implementation(const TArray<FBasicParticleData>& Data, UNiagaraSystem* NiagaraSystem) override;
 
 protected :
 	virtual void BeginPlay();
