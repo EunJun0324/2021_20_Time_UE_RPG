@@ -48,6 +48,7 @@ private:
 	void OnVerticalLook(float InAxis);
 
 	void OnOneHand();
+	void OnWizard();
 
 	void OnAction();
 

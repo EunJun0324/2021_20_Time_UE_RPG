@@ -56,11 +56,8 @@ void UCWeaponComponent::SetTwoHandMode()
 void UCWeaponComponent::SetWarpMode()
 { SetMode(EWeaponType::Warp); }
 
-void UCWeaponComponent::SetFireStormMode()
-{ SetMode(EWeaponType::FireStorm); }
-
-void UCWeaponComponent::SetIceBallMode()
-{ SetMode(EWeaponType::IceBall); }
+void UCWeaponComponent::SetWizardMode()
+{ SetMode(EWeaponType::Wizard); }
 
 void UCWeaponComponent::SetBowMode()
 { SetMode(EWeaponType::Bow); }
