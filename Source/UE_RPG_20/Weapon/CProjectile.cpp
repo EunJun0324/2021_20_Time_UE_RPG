@@ -33,6 +33,8 @@ void ACProjectile::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void ACProjectile::OnComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	SetLifeSpan(0.5f);
+
 	for (AActor* actor : IgnoreActors)
 		CheckTrue(actor == OtherActor);
 
