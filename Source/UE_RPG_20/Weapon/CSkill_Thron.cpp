@@ -14,12 +14,12 @@ ACSkill_Thron::ACSkill_Thron()
 void ACSkill_Thron::ReceiveParticleData_Implementation(const TArray<FBasicParticleData>& Data, UNiagaraSystem* NiagaraSystem)
 {
 		FVector location = Data[0].Position;
-		 
+
 		if (CollisionMesh)
 		{
 			FBox box = CollisionMesh->GetBoundingBox();
 			FVector center = box.GetCenter();
-			FVector extent = box.GetExtent();
+			FVector extent = box.GetExtent() * 3.3;
 
 			TArray<FHitResult> hitResults;
 
@@ -29,16 +29,13 @@ void ACSkill_Thron::ReceiveParticleData_Implementation(const TArray<FBasicPartic
 			TArray<AActor*> ignores;
 			ignores.Add(OwnerCharacter);
 
-			UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), location, location, extent.X * 0.5f, objects, false, ignores, EDrawDebugTrace::ForDuration, hitResults, true);
+			UKismetSystemLibrary::BoxTraceMultiForObjects(GetWorld(), location, location, extent, FRotator::ZeroRotator, objects, false, ignores, EDrawDebugTrace::ForDuration, hitResults, true);
 		
 			for (auto hit : hitResults)
 			{
-				if (hit.GetActor() != OwnerCharacter)
-				{
-					ACharacter* character = Cast<ACharacter>(hit.GetActor());
-					HitData.SendDamage(OwnerCharacter, this, character);
-					Destroy();
-				}
+				ACharacter* character = Cast<ACharacter>(hit.GetActor());
+				HitData.SendDamage(OwnerCharacter, this, character);
+				Destroy();
 			}
 		}
 }

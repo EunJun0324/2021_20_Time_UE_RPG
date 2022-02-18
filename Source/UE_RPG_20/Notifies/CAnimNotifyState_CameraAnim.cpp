@@ -5,6 +5,7 @@
 #include "Camera/PlayerCameraManager.h"
 #include "Camera/CameraAnim.h"
 #include "Weapon/CCameraAnimModifier.h"
+#include "Component/CStatusComponent.h"
 
 FString UCAnimNotifyState_CameraAnim::GetNotifyName_Implementation() const
 {
@@ -28,6 +29,10 @@ void UCAnimNotifyState_CameraAnim::NotifyBegin(USkeletalMeshComponent* MeshComp,
 	Modifier->SetPlayerLocation(character->GetActorLocation());
 	Modifier->SetTargetLocation(character->GetActorLocation());
 
+	controller->PlayerCameraManager->PlayCameraAnim(CameraAnim, PlayRatio, 1, BlendInTime, BlendOutTime);
+
+	UCStatusComponent* status = CHelpers::GetComponent<UCStatusComponent>(character);
+	status->EnableFixedCamera();
 }
 
 void UCAnimNotifyState_CameraAnim::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
@@ -44,4 +49,7 @@ void UCAnimNotifyState_CameraAnim::NotifyEnd(USkeletalMeshComponent* MeshComp, U
 	CheckNull(controller);
 
 	controller->PlayerCameraManager->RemoveCameraModifier(Modifier);
+
+	UCStatusComponent* status = CHelpers::GetComponent<UCStatusComponent>(character);
+	status->DisableFixedCamera();
 }

@@ -84,6 +84,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void ACPlayer::OnMoveForward(float InAxis)
 {
 	CheckFalse(Status->CanMove());
+	CheckFalse(State->IsIdleMode());
 
 	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
 	FVector direction = FQuat(rotator).GetForwardVector();
@@ -94,6 +95,7 @@ void ACPlayer::OnMoveForward(float InAxis)
 void ACPlayer::OnMoveRight(float InAxis)
 {
 	CheckFalse(Status->CanMove());
+	CheckFalse(State->IsIdleMode());
 
 	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
 	FVector direction = FQuat(rotator).GetRightVector();
@@ -103,11 +105,13 @@ void ACPlayer::OnMoveRight(float InAxis)
 
 void ACPlayer::OnHorizontalLook(float InAxis)
 {
+	CheckTrue(Status->GetFixedCamera());
 	AddControllerYawInput(InAxis * HorizontalLook * GetWorld()->GetDeltaSeconds());
 }
 
 void ACPlayer::OnVerticalLook(float InAxis)
 {
+	CheckTrue(Status->GetFixedCamera());
 	AddControllerPitchInput(InAxis * VerticalLook * GetWorld()->GetDeltaSeconds());
 }
 

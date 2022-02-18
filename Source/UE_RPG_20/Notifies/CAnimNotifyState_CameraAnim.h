@@ -8,7 +8,20 @@ UCLASS()
 class UE_RPG_20_API UCAnimNotifyState_CameraAnim : public UAnimNotifyState
 {
 	GENERATED_BODY()
-	
+
+private :
+	UPROPERTY(EditAnywhere)
+		class UCameraAnim* CameraAnim;
+
+	UPROPERTY(EditAnywhere)
+		float PlayRatio = 1;
+
+	UPROPERTY(EditAnywhere)
+		float BlendInTime = 0;
+
+	UPROPERTY(EditAnywhere)
+		float BlendOutTime = 0;
+
 private:
 	FString GetNotifyName_Implementation() const override;
 
