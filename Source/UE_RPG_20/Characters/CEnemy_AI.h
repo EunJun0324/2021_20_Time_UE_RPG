@@ -10,14 +10,14 @@ class UE_RPG_20_API ACEnemy_AI : public ACEnemy
 	GENERATED_BODY()
 	
 private :
-	UPROPERTY(EditDefalutsOnly, Category = "AI")
+	UPROPERTY(EditDefaultsOnly, Category = "AI")
 		class UBehaviorTree* BehaviorTree;
 
-	UPROPERTY(EditDefalutsOnly, Category = "AI")
+	UPROPERTY(EditDefaultsOnly, Category = "AI")
 		uint8 TeamID = 2;
 
 private :
-	UPROPERTY(VisibleDefaultOnly)
+	UPROPERTY(VisibleDefaultsOnly)
 		class UCBehaviorTreeComponent* Behavior;
 
 public :
