@@ -14,15 +14,19 @@ private :
 	UPROPERTY(EditDefaultsOnly, Category = "Color")
 		FLinearColor OriginColor = FLinearColor::Black;
 
-private:
+private :
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCMontageComponent* Montage;
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCStatusComponent* Status;
 
+protected:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCStateComponent* State;
+
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCWeaponComponent* Weapon;
 
 public:
 	ACEnemy();

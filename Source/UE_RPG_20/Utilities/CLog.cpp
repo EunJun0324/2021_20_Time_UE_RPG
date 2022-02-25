@@ -31,6 +31,9 @@ void CLog::Print(const FRotator& InValue, int32 InKey, float InDuration, FColor 
 void CLog::Print(const UObject* InValue, int32 InKey, float InDuration, FColor InColor)
 {
 	FString str;
+	
+	if (!InValue) return;
+
 	if (!!InValue)
 		str.Append(InValue->GetName());
 

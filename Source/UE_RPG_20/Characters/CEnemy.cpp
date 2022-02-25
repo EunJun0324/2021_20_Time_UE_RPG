@@ -9,6 +9,7 @@
 
 #include "Component/CStatusComponent.h"
 #include "Component/CMontageComponent.h"
+#include "Component/CWeaponComponent.h"
 
 #include "Weapon/CWeaponStructures.h"
 
@@ -17,7 +18,7 @@ ACEnemy::ACEnemy()
 	CHelpers::CreateActorComponent<UCStatusComponent>(this, &Status, "Status");
 	CHelpers::CreateActorComponent<UCStateComponent>(this, &State, "State");
 	CHelpers::CreateActorComponent<UCMontageComponent>(this, &Montage, "Montage");
-
+	CHelpers::CreateActorComponent<UCWeaponComponent>(this, &Weapon, "Weapon");
 
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -90));
 	GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));

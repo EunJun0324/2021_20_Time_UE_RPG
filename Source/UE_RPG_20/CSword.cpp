@@ -56,6 +56,7 @@ void ACSword::Equip()
 	State->SetEquipMode();
 	OwnerCharacter->PlayAnimMontage(EquipMontage, 2);
 }
+
 void ACSword::Begin_Equip()
 {
 	AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), "Hand_OneHand");

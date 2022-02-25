@@ -98,6 +98,7 @@ UCSubAction* UCWeaponComponent::GetSubAction()
 
 void UCWeaponComponent::SetMode(EWeaponType InType)
 {
+	CLog::Print(OwnerCharacter);
 	if (Type == InType)
 	{
 		SetUnarmedMode();
