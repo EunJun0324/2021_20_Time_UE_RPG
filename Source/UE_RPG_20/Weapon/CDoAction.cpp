@@ -14,4 +14,7 @@ void UCDoAction::BeginPlay(class ACAttachment* InAttachment, class ACharacter* I
 	World = OwnerCharacter->GetWorld();
 
 	State = CHelpers::GetComponent<UCStateComponent>(OwnerCharacter);
+
+	CLog::Print("UCDoAction");
+	CLog::Print(InOwner);
 }

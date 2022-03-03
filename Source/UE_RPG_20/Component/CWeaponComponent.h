@@ -70,4 +70,6 @@ public :
 private :
 	class ACharacter* OwnerCharacter;
 	EWeaponType Type = EWeaponType::Max;
+
+	class UCWeaponData* Datas[(int32)EWeaponType::Max];
 };

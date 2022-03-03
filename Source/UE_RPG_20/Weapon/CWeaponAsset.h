@@ -36,25 +36,6 @@ public :
 public :
 	UCWeaponAsset();
 
-	void BeginPlay(class ACharacter* InOwner);
+	void BeginPlay(class ACharacter* InOwner, class UCWeaponData** OutAction);
 	void EndPlay();
-
-
-	FORCEINLINE class ACAttachment* GetAttachment() { return Attachment; }
-	FORCEINLINE class UCEquippment* GetEquippment() { return Equippment; }
-	FORCEINLINE class UCDoAction* GetDoAction() { return DoAction; }
-	FORCEINLINE class UCSubAction* GetSubAction() { return SubAction; }
-
-private :
-	UPROPERTY()
-		class ACAttachment* Attachment;
-
-	UPROPERTY()
-		class UCEquippment* Equippment;
-	
-	UPROPERTY()
-		class UCDoAction* DoAction;
-
-	UPROPERTY()
-		class UCSubAction* SubAction;
 };

@@ -7,6 +7,9 @@ void UCDoAction_Combo::DoAction()
 {
 	Super::DoAction();
 
+	CLog::Print("UCDoAction");
+	CLog::Print(OwnerCharacter);
+
 	CheckFalse(ActionDatas.Num() > 0);
 
 	if (bEnable == true)

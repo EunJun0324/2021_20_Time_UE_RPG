@@ -4,6 +4,7 @@
 #include "CEquippment.h"
 #include "CDoAction.h"
 #include "CSubAction.h"
+#include "CWeaponData.h"
 #include "GameFramework/Character.h"
 
 UCWeaponAsset::UCWeaponAsset()							
@@ -14,61 +15,71 @@ UCWeaponAsset::UCWeaponAsset()
 	SubActionClass = UCSubAction::StaticClass();
 }
 
-void UCWeaponAsset::BeginPlay(class ACharacter* InOwner)
+void UCWeaponAsset::BeginPlay(class ACharacter* InOwner, class UCWeaponData** OutAction)
 {
+	ACAttachment* attachment = nullptr;
 	if (AttachmentClass)
 	{
 		FActorSpawnParameters params;
 		params.Owner = InOwner;
 
-		Attachment = InOwner->GetWorld()->SpawnActor<ACAttachment>(AttachmentClass, params);
+		attachment = InOwner->GetWorld()->SpawnActor<ACAttachment>(AttachmentClass, params);
 	}
+	UCEquippment* equippment = nullptr;
 	if (EquipmentClass)
 	{
-		Equippment = NewObject<UCEquippment>(this, EquipmentClass);
-		Equippment->BeginPlay(InOwner, EquipmentData);
+		equippment = NewObject<UCEquippment>(this, EquipmentClass);
+		equippment->BeginPlay(InOwner, EquipmentData);
 
-		if (Attachment)
+		if (attachment)
 		{
-			Equippment->OnEquip.AddDynamic(Attachment, &ACAttachment::OnEquip);
-			Equippment->OnUnequip.AddDynamic(Attachment, &ACAttachment::OnUnequip);
+			equippment->OnEquip.AddDynamic(attachment, &ACAttachment::OnEquip);
+			equippment->OnUnequip.AddDynamic(attachment, &ACAttachment::OnUnequip);
 		}
 	}
+	UCDoAction* doAction = nullptr;
 	if (DoActionClass)
 	{
-		DoAction = NewObject<UCDoAction>(this, DoActionClass);
-		DoAction->BeginPlay(Attachment, InOwner, DoActionDatas, HitDatas);
+		doAction = NewObject<UCDoAction>(this, DoActionClass);
+		doAction->BeginPlay(attachment, InOwner, DoActionDatas, HitDatas);
 
-		if (Equippment)
+		if (equippment)
 		{
-			DoAction->SetEquipping(Equippment->IsEquipping());
-			Equippment->OnEquip.AddDynamic(DoAction, &UCDoAction::OnEquip);
-			Equippment->OnUnequip.AddDynamic(DoAction, &UCDoAction::OnUnequip);
+			doAction->SetEquipping(equippment->IsEquipping());
+			equippment->OnEquip.AddDynamic(doAction, &UCDoAction::OnEquip);
+			equippment->OnUnequip.AddDynamic(doAction, &UCDoAction::OnUnequip);
 		}
-		if (Attachment)
+		if (attachment)
 		{
-			Attachment->OnAttachmentBeginOverlap.AddDynamic(DoAction, &UCDoAction::OnAttachmentBeginOverlap);
-			Attachment->OnAttachmentEndOverlap.AddDynamic(DoAction, &UCDoAction::OnAttachmentEndOverlap);
+			attachment->OnAttachmentBeginOverlap.AddDynamic(doAction, &UCDoAction::OnAttachmentBeginOverlap);
+			attachment->OnAttachmentEndOverlap.AddDynamic(doAction, &UCDoAction::OnAttachmentEndOverlap);
 
-			Attachment->OnAttachmentCollision.AddDynamic(DoAction, &UCDoAction::OnAttachmentCollision);
-			Attachment->OffAttachmentCollision.AddDynamic(DoAction, &UCDoAction::OffAttachmentCollision);
+			attachment->OnAttachmentCollision.AddDynamic(doAction, &UCDoAction::OnAttachmentCollision);
+			attachment->OffAttachmentCollision.AddDynamic(doAction, &UCDoAction::OffAttachmentCollision);
 		}
 	}
 
+	UCSubAction* subAction = nullptr;
 	if (SubActionClass)
 	{
-		SubAction = NewObject<UCSubAction>(this, SubActionClass);
-		SubAction->BeginPlay(InOwner);
+		subAction = NewObject<UCSubAction>(this, SubActionClass);
+		subAction->BeginPlay(InOwner);
 
-		if (Attachment)
+		if (attachment)
 		{
-			Attachment->OnAttachmentBeginOverlap.AddDynamic(SubAction, &UCSubAction::OnAttachmentBeginOverlap);
-			Attachment->OnAttachmentEndOverlap.AddDynamic(SubAction, &UCSubAction::OnAttachmentEndOverlap);
+			attachment->OnAttachmentBeginOverlap.AddDynamic(subAction, &UCSubAction::OnAttachmentBeginOverlap);
+			attachment->OnAttachmentEndOverlap.AddDynamic(subAction, &UCSubAction::OnAttachmentEndOverlap);
 
-			Attachment->OnAttachmentCollision.AddDynamic(SubAction, &UCSubAction::OnAttachmentCollision);
-			Attachment->OffAttachmentCollision.AddDynamic(SubAction, &UCSubAction::OffAttachmentCollision);
+			attachment->OnAttachmentCollision.AddDynamic(subAction, &UCSubAction::OnAttachmentCollision);
+			attachment->OffAttachmentCollision.AddDynamic(subAction, &UCSubAction::OffAttachmentCollision);
 		}
 	}
+
+	*OutAction = NewObject<UCWeaponData>();
+	(*OutAction)->Attachment = attachment;
+	(*OutAction)->Equippment = equippment;
+	(*OutAction)->DoAction   = doAction;
+	(*OutAction)->SubAction  = subAction;
 }
 
 void UCWeaponAsset::EndPlay()

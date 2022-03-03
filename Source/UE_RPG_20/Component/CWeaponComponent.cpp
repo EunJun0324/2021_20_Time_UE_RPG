@@ -4,6 +4,7 @@
 #include "Weapon/CDoAction.h"
 #include "Weapon/CSubAction.h"
 #include "Weapon/CWeaponAsset.h"
+#include "Weapon/CWeaponData.h"
 
 UCWeaponComponent::UCWeaponComponent()
 { PrimaryComponentTick.bCanEverTick = true; }
@@ -17,7 +18,7 @@ void UCWeaponComponent::BeginPlay()
 	for (int32 i = 0; i < (int32)EWeaponType::Max; i++)
 	{
 		if (DataAssets[i])
-			DataAssets[i]->BeginPlay(OwnerCharacter);
+			DataAssets[i]->BeginPlay(OwnerCharacter, &Datas[i]);
 	}
 }
 
@@ -85,20 +86,19 @@ void UCWeaponComponent::SubAction_Released()
 
 
 ACAttachment* UCWeaponComponent::GetAttachment()
-{ return DataAssets[(int32)Type]->GetAttachment(); }
+{ return Datas[(int32)Type]->GetAttachment(); }
 
 UCEquippment* UCWeaponComponent::GetEquipment()
-{ return DataAssets[(int32)Type]->GetEquippment(); }
+{ return Datas[(int32)Type]->GetEquippment(); }
 
 UCDoAction* UCWeaponComponent::GetDoAction()
-{ return DataAssets[(int32)Type]->GetDoAction(); }
+{ return Datas[(int32)Type]->GetDoAction(); }
 
 UCSubAction* UCWeaponComponent::GetSubAction()
-{ return DataAssets[(int32)Type]->GetSubAction(); }
+{ return Datas[(int32)Type]->GetSubAction(); }
 
 void UCWeaponComponent::SetMode(EWeaponType InType)
 {
-	CLog::Print(OwnerCharacter);
 	if (Type == InType)
 	{
 		SetUnarmedMode();
@@ -108,9 +108,9 @@ void UCWeaponComponent::SetMode(EWeaponType InType)
 	else if (IsUnarmedMode() == false)
 	{ GetEquipment()->Unequip(); }
 	
-	if (DataAssets[(int32)InType])
+	if (DataAssets[(int32)Type])
 	{
-		DataAssets[(int32)InType]->GetEquippment()->Equip();
+		Datas[(int32)Type]->GetEquippment()->Equip();
 
 		ChangeType(InType);
 	}
