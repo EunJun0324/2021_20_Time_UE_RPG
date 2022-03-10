@@ -16,7 +16,8 @@ public class UE_RPG_20 : ModuleRules
             "InputCore",
             "Niagara",
             "AIModule",
-            "GamePlayTasks"
+            "GamePlayTasks",
+            "UMG"
         });
 
         PublicIncludePaths.Add(ModuleDirectory);

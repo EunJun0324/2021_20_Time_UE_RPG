@@ -6,6 +6,7 @@
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "Component/CStateComponent.h"
 #include "Component/CBehaviorTreeComponent.h"
+#include "Component/CPatrolComponent.h"
 
 
 UCBTService_Melee::UCBTService_Melee()
@@ -31,6 +32,15 @@ void UCBTService_Melee::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 
 	if (!player)
 	{
+		UCPatrolComponent* patrol = CHelpers::GetComponent<UCPatrolComponent>(ai);
+
+		if (patrol)
+		{
+			behavior->SetPatrolMode();
+
+			return;
+		}
+
 		behavior->SetWaitMode();
 
 		return;

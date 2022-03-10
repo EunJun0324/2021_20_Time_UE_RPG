@@ -5,6 +5,7 @@
 #include "Weapon/CSubAction.h"
 #include "Weapon/CWeaponAsset.h"
 #include "Weapon/CWeaponData.h"
+#include "Weapon/CAttachment.h"
 
 UCWeaponComponent::UCWeaponComponent()
 { PrimaryComponentTick.bCanEverTick = true; }
@@ -20,8 +21,12 @@ void UCWeaponComponent::BeginPlay()
 		if (DataAssets[i])
 			DataAssets[i]->BeginPlay(OwnerCharacter, &Datas[i]);
 	}
-}
 
+	CLog::Print(OwnerCharacter);
+
+	for (int32 i = 0; i < (int32)EWeaponType::Max; i++)
+		CLog::Print(Datas[i]);
+}
 
 void UCWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
@@ -29,13 +34,9 @@ void UCWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 
 	if (IsUnarmedMode() == false)
 	{
-		if (GetDoAction())
-			GetDoAction()->Tick(DeltaTime);
-
 		if (GetSubAction())
 			GetSubAction()->Tick(DeltaTime);
 	}
-
 }
 
 
@@ -106,11 +107,11 @@ void UCWeaponComponent::SetMode(EWeaponType InType)
 		return;
 	}
 	else if (IsUnarmedMode() == false)
-	{ GetEquipment()->Unequip(); }
+	{ Datas[(int32)Type]->GetEquippment()->Unequip(); }
 	
-	if (DataAssets[(int32)Type])
+	if (Datas[(int32)InType])
 	{
-		Datas[(int32)Type]->GetEquippment()->Equip();
+		Datas[(int32)InType]->GetEquippment()->Equip();
 
 		ChangeType(InType);
 	}
@@ -124,3 +125,14 @@ void UCWeaponComponent::ChangeType(EWeaponType InType)
 		OnWeaponTypeChanged.Broadcast(InType);
 }
 
+void UCWeaponComponent::RemoveAll()
+{
+	for (int32 i = 0; i < (int32)EWeaponType::Max; i++)
+	{
+		if (Datas[i])
+		{
+			if (Datas[i]->GetAttachment())
+				Datas[i]->GetAttachment()->Destroy();
+		}
+	}
+}

@@ -26,6 +26,8 @@ ACAIController::ACAIController()
 	SightSense->DetectionByAffiliation.bDetectNeutrals   = false;
 	SightSense->DetectionByAffiliation.bDetectFriendlies = false;
 
+	SightSense->AutoSuccessRangeFromLastSeenLocation = 3;
+
 	Perception->ConfigureSense(*SightSense);
 	Perception->SetDominantSense(*SightSense->GetSenseImplementation());
 }

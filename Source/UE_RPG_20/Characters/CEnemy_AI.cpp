@@ -16,5 +16,5 @@ void ACEnemy_AI::BeginPlay()
 	Super::BeginPlay();
 
 	CheckFalse(State->IsIdleMode());
-	// Weapon->SetOneHandMode();
+	Weapon->SetOneHandMode();
 }

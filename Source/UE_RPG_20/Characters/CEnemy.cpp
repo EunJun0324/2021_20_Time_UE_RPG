@@ -4,6 +4,7 @@
 
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/WidgetComponent.h"
 
 #include "Materials/MaterialInstanceDynamic.h"
 
@@ -13,8 +14,12 @@
 
 #include "Weapon/CWeaponStructures.h"
 
+#include "Widget/CUserWidget_Health.h"
+
 ACEnemy::ACEnemy()
 {
+	CHelpers::CreateComponent<UWidgetComponent>(this, &HealthBar, "HealthBar", GetMesh());
+
 	CHelpers::CreateActorComponent<UCStatusComponent>(this, &Status, "Status");
 	CHelpers::CreateActorComponent<UCStateComponent>(this, &State, "State");
 	CHelpers::CreateActorComponent<UCMontageComponent>(this, &Montage, "Montage");
@@ -30,6 +35,14 @@ ACEnemy::ACEnemy()
 	TSubclassOf<UAnimInstance> animInstance;
 	CHelpers::GetClass<UAnimInstance>(&animInstance, "AnimBlueprint'/Game/BP_CAnimInstance.BP_CAnimInstance_C'");
 	GetMesh()->SetAnimInstanceClass(animInstance);
+
+	TSubclassOf<UCUserWidget_Health> healthClass;
+	CHelpers::GetClass<UCUserWidget_Health>(&healthClass, "WidgetBlueprint'/Game/Widget/BP_CUserWidget_Health.BP_CUserWidget_Health_C'");
+	HealthBar->SetWidgetClass(healthClass);
+	HealthBar->SetRelativeLocation(FVector(0, 0, 200));
+	HealthBar->SetDrawSize(FVector2D(200, 50));
+	HealthBar->SetWidgetSpace(EWidgetSpace::Screen);
+
 }
 
 void ACEnemy::BeginPlay()
@@ -49,6 +62,11 @@ void ACEnemy::BeginPlay()
 	}
 
 	Change_Character_Color(OriginColor);
+
+	HealthBar->InitWidget();
+	Cast<UCUserWidget_Health>(HealthBar->GetUserWidgetObject())->UpdateHealth(Status->GetHp(), Status->GetMaxHp());
+	Cast<UCUserWidget_Health>(HealthBar->GetUserWidgetObject())->UpdateCharacterName(GetName());
+
 }
 
 void ACEnemy::OnStateTypeChanged(EStateType InType)
@@ -63,8 +81,6 @@ void ACEnemy::OnStateTypeChanged(EStateType InType)
 float ACEnemy::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
 {
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-
-	CLog::Print(this);
 
 	Damaged.DamageAmount = DamageAmount;
 	Damaged.EventInstigator = EventInstigator;
@@ -98,6 +114,8 @@ void ACEnemy::Hitted()
 		return;
 	}
 
+	Cast<UCUserWidget_Health>(HealthBar->GetUserWidgetObject())->UpdateHealth(Status->GetHp(), Status->GetMaxHp());
+
 	FVector start = GetActorLocation();
 	FVector target = Damaged.EventInstigator->GetPawn()->GetActorLocation();
 
@@ -129,6 +147,7 @@ void ACEnemy::Dead()
 {
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Montage->PlayDeadMode();
+	Weapon->RemoveAll();
 }
 
 void ACEnemy::Change_Character_Color(FLinearColor InColor)

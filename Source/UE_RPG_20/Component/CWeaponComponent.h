@@ -28,7 +28,7 @@ public :
 	FORCEINLINE bool IsOneHandMode()   { return Type == EWeaponType::OneHand; }
 	FORCEINLINE bool IsTwoHandMode()   { return Type == EWeaponType::TwoHand; }
 	FORCEINLINE bool IsWarpMode()      { return Type == EWeaponType::Warp; }
-	FORCEINLINE bool IsWizardMode() { return Type == EWeaponType::Wizard; }
+	FORCEINLINE bool IsWizardMode()    { return Type == EWeaponType::Wizard; }
 	FORCEINLINE bool IsBowMode()       { return Type == EWeaponType::Bow; }
 
 
@@ -46,6 +46,8 @@ public:
 	void DoAction();
 	void SubAction_Pressed();
 	void SubAction_Released();
+
+	void RemoveAll();
 
 protected:
 	virtual void BeginPlay() override;

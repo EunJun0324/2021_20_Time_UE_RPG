@@ -20,8 +20,6 @@ public:
 	virtual void Begin_DoAction() {}
 	virtual void End_DoAction() {}
 
-	virtual void Tick(float InDeltaTime) {}
-
 public :
 	UFUNCTION()
 		virtual void OnAttachmentBeginOverlap(class ACharacter* InAttacker, class AActor* InAttackCauser, class ACharacter* InOtherCharacter) {}

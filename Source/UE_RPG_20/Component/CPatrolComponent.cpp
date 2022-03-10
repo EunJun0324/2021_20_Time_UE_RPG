@@ -22,12 +22,13 @@ bool UCPatrolComponent::GetMoveTo(FVector& OutLocation, float& OutAcceptanceDist
 	OutLocation = Path->GetSpline()->GetLocationAtSplinePoint(NextIndex, ESplineCoordinateSpace::World);
 	OutAcceptanceDistanse = AcceptanceDistanse;
 
-	return false;
+	return true;
 }
 
 void UCPatrolComponent::UpdateNextIndex()
 {
 	int32 count = Path->GetSpline()->GetNumberOfSplinePoints();
+
 	if (bReverse)
 	{
 		if (NextIndex > 0)

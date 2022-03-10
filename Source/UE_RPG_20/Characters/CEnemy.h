@@ -10,6 +10,10 @@ class UE_RPG_20_API ACEnemy : public ACharacter
 {
 	GENERATED_BODY()
 
+protected :
+	UPROPERTY(VisibleDefaultsOnly)
+		class UWidgetComponent* HealthBar;
+
 private :
 	UPROPERTY(EditDefaultsOnly, Category = "Color")
 		FLinearColor OriginColor = FLinearColor::Black;
