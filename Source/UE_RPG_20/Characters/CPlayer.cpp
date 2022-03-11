@@ -59,6 +59,9 @@ void ACPlayer::BeginPlay()
 
 	//Sword = GetWorld()->SpawnActor<ACSword>(SwordClass, params);
 	//Sword->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), "Holster_OneHand");
+
+	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetInputMode(FInputModeGameOnly());
+	UGameplayStatics::GetPlayerController(GetWorld(), 0)->bShowMouseCursor = false;
 }
 
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
