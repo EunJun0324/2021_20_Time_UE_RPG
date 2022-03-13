@@ -20,6 +20,8 @@ private :
 private :
 	void ResetInputMode(bool bForceChange = false);
 
+	void ChanageInputMode(EInputModeType inputMode);
+
 	void SaveWidgetPosition(const class UCUserWidget_Closable* closable);
 
 public :
@@ -39,7 +41,7 @@ public :
 	void AddChildWidget(class UUserWidget* childWidget,
 		EInputModeType changeInputMode = EInputModeType::IM_UIOnly,
 		bool bShowMoseCursor = true,
-		float widtg = 1920.0f, float height = 1080.0f);
+		float width = 1920.0f, float height = 1080.0f);
 	
 	void CloseChildWidget(class UUserWidget* childWidget);
 
@@ -50,7 +52,7 @@ private :
 
 	class APlayerController* PlayerController;
 
-	TArray<class UCUserWidget_Closable> AllocatedClosable;
+	TArray<class UCUserWidget_Closable*> AllocatedClosable;
 
 	TArray<class UUserWidget*> AllocatedWidget;
 

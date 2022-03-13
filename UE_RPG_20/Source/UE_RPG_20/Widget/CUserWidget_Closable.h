@@ -26,6 +26,13 @@ protected :
 	UPROPERTY(meta = (BindWidget))
 		class UButton* CloseButton;
 
+public :
+	FORCEINLINE void SetWidgetController(class UCWidgetController* widgetController) { WidgetController = widgetController; };
+	FORCEINLINE FVector2D GetWndSize() const { return WndSize; }
+
+public :
+	class UCanvasPanelSlot* GetCanvasPanelSlot() const;
+
 protected :
 	virtual void NativeConstruct() override;
 
@@ -43,7 +50,17 @@ public :
 	void SetCloseButton(class UButton* closeButton);
 	
 	void CloseAllChildWidget();
+	
+	void DetachFromParent();
 
 public:
 	FWndEventSignature OnWndCloseEvent;
+
+protected :
+	FVector2D WndSize;
+
+private :
+	class UCWidgetController* WidgetController;
+
+	TArray<UCUserWidget_Closable*> ChildClosable;
 };
