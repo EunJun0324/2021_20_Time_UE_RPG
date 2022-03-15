@@ -16,6 +16,15 @@ private :
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Button_Exit;
 
+	UPROPERTY(meta = (BindWidget))
+	class UCWidgetController* WidgetController;
+
+private :
+	TSubclassOf<class UCWidget_Exit> Class_ExitWidget;
+
+public :
+	UCWidget_Title(const FObjectInitializer& ObjInitializer);
+
 protected :
 	virtual void NativeConstruct() override;
 

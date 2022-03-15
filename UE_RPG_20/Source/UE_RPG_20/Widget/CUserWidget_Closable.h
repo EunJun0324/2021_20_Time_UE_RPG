@@ -22,8 +22,12 @@ public :
 	UPROPERTY()
 		bool bClose;
 
-protected :
+private :
 	UPROPERTY(meta = (BindWidget))
+		class UCUserWidget_DragTitle* DragTitle;
+
+protected :
+	UPROPERTY()
 		class UButton* CloseButton;
 
 public :

@@ -4,12 +4,20 @@
 #include "Components/Button.h"
 
 #include "CWidgetController.h"
+#include "CUserWidget_DragTitle.h"
 
 void UCUserWidget_Closable::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	SetCloseButton(CloseButton);
+	WndSize = FVector2D(500.0f, 600.0f);
+
+	DragTitle->SetTargetWidget(this);
+
+	DragTitle->OnDraggingStart.AddLambda(
+		[this]() { WidgetController->SetHighestPriorityWidget(this); });
+
+	SetCloseButton(DragTitle->GetCloseButton());
 }
 
 void UCUserWidget_Closable::CloseThisWidget()
@@ -32,7 +40,7 @@ UCUserWidget_Closable* UCUserWidget_Closable::CreateChildClosableWidget(TSubclas
 
 void UCUserWidget_Closable::SetCloseButton(class UButton* closeButton)
 {
-	closeButton->OnClicked.AddDynamic(this, &UCUserWidget_Closable::CloseThisWidget);
+	(CloseButton = closeButton)->OnClicked.AddDynamic(this, &UCUserWidget_Closable::CloseThisWidget);
 }
 
 void UCUserWidget_Closable::CloseAllChildWidget()
