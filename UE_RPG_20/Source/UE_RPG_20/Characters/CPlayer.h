@@ -36,6 +36,10 @@ private :
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCWeaponComponent* Weapon;
+
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCWidgetComponent* Widget;
+
 public:
 	ACPlayer();
 

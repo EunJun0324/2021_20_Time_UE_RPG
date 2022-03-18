@@ -8,6 +8,8 @@ UENUM(BlueprintType)
 enum class ESpeedType : uint8
 { Walk, Run, Sprint, Max, };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnChangeStatus, float, value);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class UE_RPG_20_API UCStatusComponent : public UActorComponent
 {
@@ -49,6 +51,9 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+public :
+	FOnChangeStatus OnChangeHpEvent;
 
 private :
 	class ACharacter* OwnerCharacter;

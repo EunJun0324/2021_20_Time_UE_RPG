@@ -4,9 +4,10 @@
 #include "Widget/CWidgetController.h"
 #include "CWidget_Exit.h"
 
-UCWidget_Title::UCWidget_Title(const FObjectInitializer& ObjInitializer)
+UCWidget_Title::UCWidget_Title(const FObjectInitializer& ObjInitializer) :
+	Super(ObjInitializer)
 {
-	CHelpers::GetClass<UCWidget_Exit>(&Class_ExitWidget, "");
+	CHelpers::GetClass<UCWidget_Exit>(&Class_ExitWidget, "WidgetBlueprint'/Game/Widget/BP_CWidget_Exit.BP_CWidget_Exit_C'");
 }
 
 
@@ -16,6 +17,8 @@ void UCWidget_Title::NativeConstruct()
 
 	Button_Play->OnClicked.AddDynamic(this, &UCWidget_Title::PlayButtonClicked);
 	Button_Exit->OnClicked.AddDynamic(this, &UCWidget_Title::ExitButtonClicked);
+
+	WidgetController->InitWidgetController();
 }
 
 void UCWidget_Title::PlayButtonClicked()

@@ -9,12 +9,18 @@ void UCStatusComponent::AddHealth(float InAmount)
 {
 	Health += InAmount;
 	Health = FMath::Clamp(Health, 0.0f, MaxHealth);
+
+	if (OnChangeHpEvent.IsBound())
+		OnChangeHpEvent.Broadcast(Health / MaxHealth);
 }
 
 void UCStatusComponent::SubHealth(float InAmount)
 {
 	Health -= InAmount;
 	Health = FMath::Clamp(Health, 0.0f, MaxHealth);
+
+	if (OnChangeHpEvent.IsBound())
+		OnChangeHpEvent.Broadcast(Health / MaxHealth);
 }
 
 void UCStatusComponent::SetSpeed(ESpeedType InType)

@@ -10,7 +10,8 @@
 #include "Component/CStatusComponent.h"
 #include "Component/CStateComponent.h"
 #include "Component/CWeaponComponent.h"
-	
+#include "Component/CWidgetComponent.h"	
+
 // #include "CSword.h"
 
 ACPlayer::ACPlayer()
@@ -20,7 +21,7 @@ ACPlayer::ACPlayer()
 	CHelpers::CreateActorComponent<UCStatusComponent>(this, &Status, "Status");
 	CHelpers::CreateActorComponent<UCStateComponent>(this, &State, "State");
 	CHelpers::CreateActorComponent<UCWeaponComponent>(this, &Weapon, "Weapon");
-
+	CHelpers::CreateActorComponent<UCWidgetComponent>(this, &Widget, "Widget");
 
 	bUseControllerRotationYaw = false;
 
