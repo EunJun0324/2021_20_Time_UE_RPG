@@ -85,6 +85,16 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+float ACPlayer::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
+{
+	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	CLog::Print("TakeDamage!");
+
+	Status->SubHealth(DamageAmount);
+
+	return DamageAmount;
+}
 void ACPlayer::OnMoveForward(float InAxis)
 {
 	CheckFalse(Status->CanMove());
