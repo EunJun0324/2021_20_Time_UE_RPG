@@ -82,7 +82,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("SubAction", IE_Pressed, this, &ACPlayer::OnSubAction_Pressed);
 	PlayerInputComponent->BindAction("SubAction", IE_Released, this, &ACPlayer::OnSubAction_Released);
 
-
+	PlayerInputComponent->BindAction("Status", IE_Pressed, Widget, &UCWidgetComponent::ToggleStatus);
 }
 
 float ACPlayer::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)

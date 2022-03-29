@@ -1,7 +1,7 @@
 #include "Widget/PlayerWidget/StautusWidget/CWidget_StatusRow.h"
 #include "Global.h"
 #include "Engine/AssetManager.h"
-#include "Engine/StreamableManger.h"
+#include "Engine/StreamableManager.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "Components/Button.h"
@@ -36,8 +36,8 @@ void UCWidget_StatusRow::OnPlusButtonClicked()
 
 void UCWidget_StatusRow::OnMinusButtonClicked()
 {
-	if (OnClickMiunsButton.IsBound())
-		OnClickMiunsButton.Broadcast();
+	if (OnClickMinusButton.IsBound())
+		OnClickMinusButton.Broadcast();
 
 	--Stat;
 	Text_Stat->SetText(FText::FromString(FString::FromInt(Stat)));

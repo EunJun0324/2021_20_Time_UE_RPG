@@ -8,6 +8,10 @@ UENUM(BlueprintType)
 enum class ESpeedType : uint8
 { Walk, Run, Sprint, Max, };
 
+UENUM(BlueprintType)
+enum class EStatusType : uint8
+{ Hp, Time, Recover, Atk, Gun, Heal, Max };
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnChangeStatus, float, value);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -46,6 +50,12 @@ public:
 
 	void AddHealth(float InAmount);
 	void SubHealth(float InAmount);
+
+	UFUNCTION()
+		void AddMaxHealth();
+	UFUNCTION()
+		void SubMaxHealth();
+
 
 	void SetSpeed(ESpeedType InType);
 

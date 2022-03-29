@@ -5,7 +5,7 @@
 #include "Engine/DataTable.h"
 #include "CWidget_StatusRow.generated.h"
 
-UPROPERTY(BlueprintType)
+USTRUCT(BlueprintType)
 struct FStatusRowData : public FTableRowBase
 {
 	GENERATED_BODY()
@@ -18,7 +18,7 @@ public :
 		FText Stat;
 };
 
-DECLARE_DYNAMIC_MUTICAST_DELEGATE(FStatusButtonClicked);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStatusButtonClicked);
 
 UCLASS()
 class UE_RPG_20_API UCWidget_StatusRow : public UUserWidget
@@ -47,7 +47,7 @@ protected:
 public:
 	void InitializeRow(FStatusRowData data);
 
-	FORCEINLINE void SetStat(int32 stat) { Stat = stat };
+	FORCEINLINE void SetStat(int32 stat) { Stat = stat; };
 
 private :
 	UFUNCTION()

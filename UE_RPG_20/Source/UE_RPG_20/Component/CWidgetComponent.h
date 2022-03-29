@@ -15,6 +15,9 @@ private :
 	
 	TSubclassOf<class UCPlayerWidget> PlayerWidgetClass;
 
+	TSubclassOf<class UCWidget_Status> StatusWidgetClass;
+
+
 private :
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCWidgetController* WidgetController;
@@ -22,10 +25,20 @@ private :
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCPlayerWidget* PlayerWidget;
 
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCWidget_Status* StatusWidget;
+
 public:	
 	UCWidgetComponent();
 
 protected:
 	virtual void BeginPlay() override;
 
+private :
+	void OpenStatus();
+
+	void CloseStatus();
+
+public :
+	void ToggleStatus();
 };

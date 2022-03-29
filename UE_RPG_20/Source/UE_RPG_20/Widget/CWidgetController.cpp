@@ -13,12 +13,15 @@ void UCWidgetController::ResetInputMode(bool bForceChange)
 		{
 		case EInputModeType::IM_GameOnly:
 			PlayerController->SetInputMode(FInputModeGameOnly());
+			PlayerController->bShowMouseCursor = false;
 			break;
 		case EInputModeType::IM_UIOnly:
 			PlayerController->SetInputMode(FInputModeUIOnly());
+			PlayerController->bShowMouseCursor = true;
 			break;
 		case EInputModeType::IM_GameAndUI:
 			PlayerController->SetInputMode(FInputModeGameAndUI());
+			PlayerController->bShowMouseCursor = true;
 			break;
 		}
 	}

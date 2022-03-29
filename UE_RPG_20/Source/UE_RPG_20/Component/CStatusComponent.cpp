@@ -23,6 +23,22 @@ void UCStatusComponent::SubHealth(float InAmount)
 		OnChangeHpEvent.Broadcast(Health / MaxHealth);
 }
 
+void UCStatusComponent::AddMaxHealth()
+{
+	MaxHealth += 100;
+
+	if (OnChangeHpEvent.IsBound())
+		OnChangeHpEvent.Broadcast(Health / MaxHealth);
+}
+
+void UCStatusComponent::SubMaxHealth()
+{
+	MaxHealth -= 100;
+
+	if (OnChangeHpEvent.IsBound())
+		OnChangeHpEvent.Broadcast(Health / MaxHealth);
+}
+
 void UCStatusComponent::SetSpeed(ESpeedType InType)
 { OwnerCharacter->GetCharacterMovement()->MaxWalkSpeed = Speed[(int32)InType]; }
 
